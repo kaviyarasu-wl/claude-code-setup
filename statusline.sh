@@ -3,9 +3,23 @@
 
 INPUT=$(cat)
 
-USED_PCT=$(echo "$INPUT" | jq -r '.context_window.used_percentage // 0')
 MODEL=$(echo "$INPUT" | jq -r '.model.display_name // "unknown"')
 COST=$(echo "$INPUT" | jq -r '.cost.total_cost_usd // 0')
+
+# Try pre-calculated percentage first, fall back to manual calculation from raw tokens
+USED_PCT=$(echo "$INPUT" | jq -r '
+  if .context_window.used_percentage == null or .context_window.used_percentage == 0 then
+    (
+      ((.context_window.current_usage.input_tokens // 0)
+       + (.context_window.current_usage.cache_creation_input_tokens // 0)
+       + (.context_window.current_usage.cache_read_input_tokens // 0))
+      * 100
+      / ((.context_window.context_window_size // 200000) | if . == 0 then 200000 else . end)
+    )
+  else
+    .context_window.used_percentage
+  end
+')
 
 # Round percentage to integer
 PCT=$(printf '%.0f' "$USED_PCT")
