@@ -70,6 +70,18 @@ public function __construct(
 - Props down, events up
 - Co-locate related code
 
+### Visual Design Quality
+- Every component must handle all visual states: default, hover, focus-visible, active, disabled, loading, error, empty, skeleton
+- Use CSS Grid for 2D layouts, Flexbox for 1D - never nest more than 3 flex/grid containers
+- Transitions: 150ms for micro-interactions, 300ms for state changes, 500ms for page-level
+- Spacing rhythm: consistent section gaps, group related items tightly, separate groups widely
+- Visual weight: one focal point per section, clear action hierarchy (primary/secondary/tertiary)
+- Polish: consistent border-radius scale, shadow elevation system, smooth hover/focus transitions
+- Color: use project design tokens only, semantic naming (success/warning/error), WCAG AA contrast
+- Responsive: mobile-first, test at sm/md/lg/xl breakpoints, use container queries where supported
+- Accessibility: focus-visible indicators, semantic HTML elements, aria labels for interactive elements
+- Anti-AI aesthetic: vary visual weight in card grids, avoid uniform layouts, use progressive disclosure
+
 ### API Design
 - RESTful resource naming
 - Consistent error responses (Problem Details RFC 7807)

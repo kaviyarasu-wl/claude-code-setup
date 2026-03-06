@@ -43,6 +43,21 @@ For significant features or projects, orchestrate this sequence:
 - Delegate to: `/testing` skill
 - Ensure coverage meets standards
 
+### Phase Transition Protocol
+
+Each phase MUST:
+1. Produce an output file at `docs/<feature>-<phase>.md` (e.g., `docs/notifications-research.md`)
+2. The orchestrator MUST include the previous phase's output path in the next delegation prompt
+3. The next phase's agent MUST read the previous output file before starting work
+4. If the previous phase's output file does not exist, block and ask the user
+
+Context passing format in delegation prompts:
+```
+"Read docs/<feature>-research.md first for context, then [task description]"
+```
+
+Rule: Never delegate to the next phase without confirming the previous phase's output exists.
+
 ### Project Tracking
 For features spanning 3+ files, create tracking file:
 ```markdown
