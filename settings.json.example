@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 60,
+  "env": {
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "1000000",
+    "CLAUDE_CODE_PREFERRED_MODEL": "claude-opus-4-6"
+  },
+  "experimental": {
+    "agentTeams": true,
+    "extendedContext": true,
+    "adaptiveThinking": true,
+    "parallelToolCalls": true
+  },
+  "attribution": {
+    "commit": "Co-Authored-By: YOUR_NAME <your-email@example.com>",
+    "pr": "Generated with Claude Code"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(pnpm:*)",
+      "Bash(yarn:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(pwd)",
+      "Bash(which:*)",
+      "Bash(node:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(go:*)",
+      "Bash(cargo:*)",
+      "Bash(make:*)",
+      "Bash(ln:*)"
+    ],
+    "deny": [
+      "Bash(curl *| bash:*)",
+      "Bash(curl *|bash:*)",
+      "Bash(wget *| bash:*)",
+      "Bash(wget *|bash:*)",
+      "Bash(curl *| sh:*)",
+      "Bash(curl *|sh:*)",
+      "Bash(wget *| sh:*)",
+      "Bash(wget *|sh:*)",
+      "Bash(sudo:*)",
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(chmod 777:*)",
+      "Bash(chown root:*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/credentials/**)",
+      "Read(**/*.pem)",
+      "Read(**/*_rsa)",
+      "Read(**/*.key)",
+      "Read(**/.ssh/*)",
+      "Read(**/.git/config)",
+      "Read(**/.npmrc)",
+      "Read(**/.pypirc)",
+      "Read(**/config/database.yml)",
+      "Read(**/*.sqlite)",
+      "Read(**/*.db)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(npm publish:*)",
+      "Bash(docker:*)",
+      "Bash(kubectl:*)",
+      "Bash(terraform:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/session_start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/agent_indicator.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/validate_code.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/security_scan.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit:*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/pre_commit_gate.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/auto_format.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/log_activity.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/notify.sh"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date +%Y-%m-%d\\ %H:%M:%S)] Subagent STARTED\" >> $HOME/.claude/logs/subagent.log"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date +%Y-%m-%d\\ %H:%M:%S)] Subagent COMPLETED\" >> $HOME/.claude/logs/subagent.log"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date +%Y-%m-%d\\ %H:%M:%S)] Context COMPACTING\" >> $HOME/.claude/logs/compact.log"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "playwright@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "php-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "outputStyle": "Concise",
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "network": {
+      "allowLocalBinding": true
+    },
+    "excludedCommands": [
+      "git",
+      "npm",
+      "pnpm",
+      "yarn",
+      "node",
+      "python",
+      "python3",
+      "go",
+      "cargo"
+    ]
+  },
+  "preferredNotifChannel": "terminal_bell"
+}

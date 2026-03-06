@@ -1,0 +1,46 @@
+ip_whitelist.txt
+
+# Local settings (machine-specific overrides, may contain sensitive data)
+.claude/
+
+# Browser runtime data
+chrome/
+
+# Backup snapshots (machine-specific)
+backups/
+
+# Session and runtime data
+/debug/
+session-env/
+shell-snapshots/
+file-history/
+todos/
+plans/
+paste-cache/
+ide/
+
+# Logs and telemetry
+logs/
+telemetry/
+statsig/
+stats-cache.json
+history.jsonl
+
+# Project-specific data
+projects/
+local/
+
+# Plugin cache (plugins installed per-user via marketplace)
+plugins/
+cache/
+
+# Teams and tasks (runtime data)
+teams/
+tasks/
+
+# Memory is user-specific (grows per session)
+memory/
+
+# System files
+.DS_Store
+.update.lock
